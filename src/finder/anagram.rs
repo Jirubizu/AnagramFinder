@@ -21,21 +21,47 @@ impl Solver {
 
         let anagrams: SortedMap = Self::sort_map();
 
+
         Self { anagrams }
     }
 
     pub fn display_anagram(&self, search_term:String) {
-        let mut output_string:String = String::new();
+        let mut out:String = String::new();
         let mut cs: Vec<char> = search_term.chars().collect();
         cs.sort_by(|a,b| a.cmp(b));
         let ordered_search_term = String::from_iter(cs);
 
-        let found_anagrams = self.anagrams.get(&ordered_search_term).unwrap();
-        output_string += &format!("Anagrams for {} are ", search_term); 
-        for anagram in found_anagrams {
-            output_string += &format!("{}, ", anagram);
+        out += &format!("Anagrams for {} are ", search_term);
+        match self.anagrams.get(&ordered_search_term) {
+            Some(result) => {
+                for anagram in result {
+                    out += &format!("{}, ", anagram);
+                }
+            }
+
+            _ => return 
+        } 
+        print!("{}\n", out);
+    }
+
+    pub fn get_anagrams(&self, search_term: String) -> String {
+        let mut out: String = String::new();
+        let mut cs: Vec<char> = search_term.chars().collect();
+        cs.sort_by(|a,b| a.cmp(b));
+        let ordered_search_term = String::from_iter(cs);
+
+        match self.anagrams.get(&ordered_search_term) {
+            Some(result) => {
+                for anagram in result {
+                    out += &format!("{}, ", anagram);
+                }
+            }
+            _ => return "".to_string(),
         }
-        print!("{}\n", output_string);
+        //for anagram in found_anagrams{
+        //    out += &format!("{}, ", anagram);
+        //}
+        return out;
     }
 
     pub fn display(&self) {

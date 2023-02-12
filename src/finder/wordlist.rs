@@ -5,6 +5,5 @@ pub async fn obtain_latest_wordlist() -> Result<(), Box<dyn std::error::Error>> 
     let resp = reqwest::get(uri).await?.text().await?;
     let mut file = std::fs::File::create("words.txt").expect("create failed");
     file.write_all(resp.as_bytes()).expect("write failed");
-
     Ok(())
 }
